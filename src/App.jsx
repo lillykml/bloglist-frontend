@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Login from './components/Login'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import User from './components/User'
 
 function App() {
 
@@ -16,6 +17,16 @@ function App() {
       setBlogs(response)
     })
   }, [])
+
+    // Storing the user upon refreshing the page
+    useEffect(() => {
+      const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
+      if (loggedUserJSON) {
+        const user = JSON.parse(loggedUserJSON)
+        setUser(user)
+        //blogService.setToken(user.token)
+      }
+    }, [])
 
   const changeUsername = (event) => {
     setUsername(event.target.value)
@@ -32,7 +43,14 @@ function App() {
       setUser(user)
       setUsername('')
       setPassword('')
+      window.localStorage.setItem('loggedAppUser', JSON.stringify(user))
     } catch (exception) {}
+  }
+
+  const logoutHandler = (event) => {
+    event.preventDefault()
+    setUser(null)
+    window.localStorage.removeItem('loggedAppUser')
   }
 
   return (
@@ -42,7 +60,7 @@ function App() {
     loginHandler={loginHandler}/>
     : <>
     <h1>Blogs</h1>
-    <p>{user.name} logged in</p>
+    <User username={user.name} logoutHandler={logoutHandler}/>
     {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}</>
     }
     </>
