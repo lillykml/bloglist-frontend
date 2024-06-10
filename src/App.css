@@ -1,0 +1,17 @@
+/* Notification.css */
+.notification {
+    background-color: #d3d3d3;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.error {
+    border: 2px solid red;
+    color: red;
+  }
+  
+.success {
+    border: 2px solid green;
+    color: green;
+}
+  

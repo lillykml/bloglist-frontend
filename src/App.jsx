@@ -5,6 +5,8 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import User from './components/User'
 import NewBlog from './components/NewBlog'
+import Notification from './components/Notification'
+import "./App.css"
 
 function App() {
 
@@ -15,6 +17,8 @@ function App() {
   const [blogTitle, setBlogTitle] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [type, setType] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(response => {
@@ -60,7 +64,13 @@ function App() {
       setUsername('')
       setPassword('')
       window.localStorage.setItem('loggedAppUser', JSON.stringify(user))
-    } catch (exception) {}
+    } catch (exception) {
+      setNotification(`wrong username or password`)
+      setType('error')
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+      }
   }
 
   const logoutHandler = (event) => {
@@ -87,15 +97,26 @@ function App() {
       setBlogAuthor('')
       setBlogUrl('')
     })
+    setNotification(`A new blog ${newBlog.title} by ${newBlog.author} was added`)
+    setType('success')
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   if (user === null) {
-    return (<Login username={username} password={password} changeUsername={changeUsername} changePassword={changePassword} 
-      loginHandler={loginHandler}/>)
+    return (
+    <>
+    <Notification message={notification} type={type} />
+    <Login username={username} password={password} changeUsername={changeUsername} changePassword={changePassword} 
+      loginHandler={loginHandler}/>
+    </>
+    )
   } else {
     return(
     <>
       <h1>Blogs</h1>
+      <Notification message={notification} type={type} />
       <User username={user.name} logoutHandler={logoutHandler}/>
       <NewBlog blogTitle={blogTitle} blogAuthor={blogAuthor} blogUrl={blogUrl} changeTitle={changeBlogTitle}
       changeAuthor={changeBlogAuthor} changeUrl={changeBlogUrl} submitHandler={createBlog}/>
