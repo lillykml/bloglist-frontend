@@ -79,18 +79,25 @@ function App() {
   const likeBlog = (id) => {
 
     const blog = blogs.find(blog => blog.id === id)
-
     const changedBlog = { ...blog, likes: blog.likes+1 }
 
     blogService
     .update(id, changedBlog)
     .then(returnedBlog => {
       setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
-      successMessage('updated likes')
     })
     .catch(error => errorMessage(error.message))
   }
 
+  const deleteBlog = (id) => {
+    const blog = blogs.find(blog => blog.id === id)
+    window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    blogService.deleteBlog(id)
+    .then(() => {
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      successMessage('removed blog')
+    })
+    .catch(error => errorMessage(error.message))}
 
   return(
     <>
@@ -103,8 +110,10 @@ function App() {
         <Togglable buttonlabel={"create new blog"} ref={newBlogRef}>
           <NewBlog createBlog={createBlog}/>
         </Togglable>
-
-        {blogs.sort((a,b) => b.likes - a.likes).map(blog => <Blog key={blog.id} blog={blog} like={likeBlog}/>)}
+        {blogs
+        .sort((a,b) => b.likes - a.likes)
+        .map(blog => 
+          <Blog key={blog.id} blog={blog} like={likeBlog} deleteBlog={deleteBlog} username={user.username}/>)}
       </>}
     </>
   )
