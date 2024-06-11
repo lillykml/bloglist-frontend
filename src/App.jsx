@@ -33,6 +33,21 @@ function App() {
       }
     }, [])
 
+  const errorMessage = (message) => {
+    setNotification(message)
+    setType('error')
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
+  const successMessage = (message) => {
+    setNotification(message)
+    setType('success')
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
 
   const loginHandler = async(userCredentials) => {
     try {
@@ -40,11 +55,7 @@ function App() {
       setUser(user)
       window.localStorage.setItem('loggedAppUser', JSON.stringify(user))
     } catch (exception) {
-      setNotification(`wrong username or password`)
-      setType('error')
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      errorMessage(`wrong username or password`)
       }
   }
 
@@ -62,11 +73,22 @@ function App() {
     .then(response => {
       setBlogs(blogs.concat(response))
     })
-    setNotification(`A new blog ${newBlog.title} by ${newBlog.author} was added`)
-    setType('success')
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+    successMessage(`A new blog ${newBlog.title} by ${newBlog.author} was added`)
+  }
+
+  const likeBlog = (id) => {
+
+    const blog = blogs.find(blog => blog.id === id)
+
+    const changedBlog = { ...blog, likes: blog.likes+1 }
+
+    blogService
+    .update(id, changedBlog)
+    .then(returnedBlog => {
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      successMessage('updated likes')
+    })
+    .catch(error => errorMessage(error.message))
   }
 
 
@@ -82,7 +104,7 @@ function App() {
           <NewBlog createBlog={createBlog}/>
         </Togglable>
 
-        {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
+        {blogs.map(blog => <Blog key={blog.id} blog={blog} like={likeBlog}/>)}
       </>}
     </>
   )
