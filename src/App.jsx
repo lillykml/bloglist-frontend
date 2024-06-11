@@ -6,6 +6,7 @@ import loginService from './services/login'
 import User from './components/User'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import "./App.css"
 
 function App() {
@@ -118,8 +119,11 @@ function App() {
         <h1>Blogs</h1>
         <Notification message={notification} type={type} />
         <User username={user.name} logoutHandler={logoutHandler}/>
-        <NewBlog blogTitle={blogTitle} blogAuthor={blogAuthor} blogUrl={blogUrl} changeTitle={changeBlogTitle}
-        changeAuthor={changeBlogAuthor} changeUrl={changeBlogUrl} submitHandler={createBlog}/>
+        <Togglable buttonlabel={"create new blog"}>
+          <NewBlog blogTitle={blogTitle} blogAuthor={blogAuthor} blogUrl={blogUrl} changeTitle={changeBlogTitle}
+          changeAuthor={changeBlogAuthor} changeUrl={changeBlogUrl} submitHandler={createBlog}/>
+        </Togglable>
+
         {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
       </>}
     </>
