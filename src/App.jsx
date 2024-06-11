@@ -104,26 +104,26 @@ function App() {
     }, 5000)
   }
 
-  if (user === null) {
-    return (
-    <>
-    <Notification message={notification} type={type} />
-    <Login username={username} password={password} changeUsername={changeUsername} changePassword={changePassword} 
+  const loginForm = () => {
+    return<Login username={username} password={password} changeUsername={changeUsername} changePassword={changePassword} 
       loginHandler={loginHandler}/>
-    </>
-    )
-  } else {
-    return(
-    <>
-      <h1>Blogs</h1>
-      <Notification message={notification} type={type} />
-      <User username={user.name} logoutHandler={logoutHandler}/>
-      <NewBlog blogTitle={blogTitle} blogAuthor={blogAuthor} blogUrl={blogUrl} changeTitle={changeBlogTitle}
-      changeAuthor={changeBlogAuthor} changeUrl={changeBlogUrl} submitHandler={createBlog}/>
-      {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
-    </>
-    )
   }
+
+  return(
+    <>
+      <Notification message={notification} type={type} />
+      {!user && loginForm()}
+      {user && 
+      <>
+        <h1>Blogs</h1>
+        <Notification message={notification} type={type} />
+        <User username={user.name} logoutHandler={logoutHandler}/>
+        <NewBlog blogTitle={blogTitle} blogAuthor={blogAuthor} blogUrl={blogUrl} changeTitle={changeBlogTitle}
+        changeAuthor={changeBlogAuthor} changeUrl={changeBlogUrl} submitHandler={createBlog}/>
+        {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
+      </>}
+    </>
+  )
 }
 
 export default App
