@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useRef} from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import blogService from './services/blogs'
@@ -20,6 +20,7 @@ function App() {
   const [blogUrl, setBlogUrl] = useState('')
   const [notification, setNotification] = useState(null)
   const [type, setType] = useState(null)
+  const newBlogRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(response => {
@@ -82,6 +83,7 @@ function App() {
 
   const createBlog = (event) => {
     event.preventDefault()
+    newBlogRef.current.toggleVisibility()
 
     const newBlog = {
       title: blogTitle,
@@ -117,9 +119,8 @@ function App() {
       {user && 
       <>
         <h1>Blogs</h1>
-        <Notification message={notification} type={type} />
         <User username={user.name} logoutHandler={logoutHandler}/>
-        <Togglable buttonlabel={"create new blog"}>
+        <Togglable buttonlabel={"create new blog"} ref={newBlogRef}>
           <NewBlog blogTitle={blogTitle} blogAuthor={blogAuthor} blogUrl={blogUrl} changeTitle={changeBlogTitle}
           changeAuthor={changeBlogAuthor} changeUrl={changeBlogUrl} submitHandler={createBlog}/>
         </Togglable>
