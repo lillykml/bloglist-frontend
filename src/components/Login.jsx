@@ -1,4 +1,27 @@
-const Login = ({username, password, changeUsername, changePassword, loginHandler}) => {
+import { useState } from "react"
+
+
+const Login = ({login}) => {
+
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const changeUsername = (event) => {
+        setUsername(event.target.value)
+    }
+    
+    const changePassword = (event) => {
+        setPassword(event.target.value)
+    }
+
+    const loginHandler = (event) => {
+        event.preventDefault()
+        login({username, password})
+        setUsername('')
+        setPassword('')
+    }
+
+
     return(
         <>
         <h1>Log into the application</h1>

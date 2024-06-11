@@ -11,8 +11,6 @@ import "./App.css"
 
 function App() {
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -35,21 +33,11 @@ function App() {
       }
     }, [])
 
-  const changeUsername = (event) => {
-    setUsername(event.target.value)
-  }
 
-  const changePassword = (event) => {
-    setPassword(event.target.value)
-  }
-
-  const loginHandler = async(event) => {
-    event.preventDefault()
+  const loginHandler = async(userCredentials) => {
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login(userCredentials)
       setUser(user)
-      setUsername('')
-      setPassword('')
       window.localStorage.setItem('loggedAppUser', JSON.stringify(user))
     } catch (exception) {
       setNotification(`wrong username or password`)
@@ -81,15 +69,11 @@ function App() {
     }, 5000)
   }
 
-  const loginForm = () => {
-    return<Login username={username} password={password} changeUsername={changeUsername} changePassword={changePassword} 
-      loginHandler={loginHandler}/>
-  }
 
   return(
     <>
       <Notification message={notification} type={type} />
-      {!user && loginForm()}
+      {!user && <Login login={loginHandler}/>}
       {user && 
       <>
         <h1>Blogs</h1>
