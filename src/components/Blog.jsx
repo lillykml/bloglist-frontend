@@ -13,8 +13,8 @@ const Blog = ({ blog, like, deleteBlog, username }) => {
   const displayDetails = () => {
     return(
       <>
-        <p className='blog-url'>{blog.url}</p>
-        <p className='blog-likes'>{blog.likes} <button onClick={() => like(blog.id)}>Like</button></p>
+        <p id='blog-url'>{blog.url}</p>
+        <p id='blog-likes'>{blog.likes} <button onClick={() => like(blog.id)}>Like</button></p>
         <p className='blog-username'>{blog.user.name}</p>
         {blog.user.username === username ? <button onClick={() => deleteBlog(blog.id)}>Remove</button> : null}
       </>
@@ -24,7 +24,7 @@ const Blog = ({ blog, like, deleteBlog, username }) => {
   return(
     <div className="blogpost">
       <p className='blog-title'>{blog.title}</p>
-      <p className='blog-author'>{blog.author} <button onClick={clickHandler}>{showDetails ? 'hide' : 'view'}</button></p>
+      <p className='blog-author'>{blog.author} <button id='blog-view-button' onClick={clickHandler}>{showDetails ? 'hide' : 'view'}</button></p>
       {showDetails && displayDetails()}
     </div>
   )
