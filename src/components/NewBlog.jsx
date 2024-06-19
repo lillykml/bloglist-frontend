@@ -40,15 +40,15 @@ const NewBlog = ({ createBlog }) => {
       <form onSubmit={submitHandler}>
         <div>
           <label>title:</label>
-          <input type="text" value={blogTitle} onChange={changeBlogTitle}></input>
+          <input placeholder='Blog Title' type="text" value={blogTitle} onChange={changeBlogTitle}></input>
         </div>
         <div>
           <label>author:</label>
-          <input type="text" value={blogAuthor} onChange={changeBlogAuthor}></input>
+          <input  placeholder='Blog Author' type="text" value={blogAuthor} onChange={changeBlogAuthor}></input>
         </div>
         <div>
           <label>url:</label>
-          <input type="text" value={blogUrl} onChange={changeBlogUrl}></input>
+          <input placeholder='Blog Url' type="text" value={blogUrl} onChange={changeBlogUrl}></input>
         </div>
         <button type="submit">Create</button>
       </form>
