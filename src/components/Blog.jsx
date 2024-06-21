@@ -14,7 +14,7 @@ const Blog = ({ blog, like, deleteBlog, username }) => {
     return(
       <>
         <p id='blog-url'>{blog.url}</p>
-        <p id='blog-likes'>{blog.likes} <button id='blog-like-button' onClick={() => like(blog.id)}>Like</button></p>
+        <p id='blog-likes'><span data-testid='blog-likes'>{blog.likes} </span><button id='blog-like-button' onClick={() => like(blog.id)}>Like</button></p>
         <p className='blog-username'>{blog.user.name}</p>
         {blog.user.username === username ? <button onClick={() => deleteBlog(blog.id)}>Remove</button> : null}
       </>
